@@ -1,25 +1,13 @@
-#ifndef MONTY_H
-#define MONTY_H
+#ifndef PROTECT
+#define PROTECT
 
-#include <ctype.h>
-#include <stdarg.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <stdio.h>
 #include <unistd.h>
+#include <string.h>
+#include <ctype.h>
 
-/**
- * struct global_variables_s - structure for variables as global variables.
- * @number: string with the parameter given after push
- * @fd: file descriptor of opened file
- * @buffer: buffer getline
- */
-typedef struct global_variables_s
-{
-char *number;
-FILE *fd;
-char *buffer;
-} global_variables_t;
+extern int op_value;
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -51,35 +39,19 @@ char *opcode;
 void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-extern global_variables_t var_global;
+int read_func(FILE *file_d);
+int run(char *line, stack_t **stack, unsigned int line_number);
+void add_int(stack_t **stack, unsigned int line_number);
+void p_stack(stack_t **stack, unsigned int line_number);
+void free_stack(stack_t *stack);
+void print_error(unsigned int line_number, char *line_tok);
+void p_error(unsigned int line_number);
+void p_int(stack_t **stack, unsigned int line_number);
+void s_pop(stack_t **stack, unsigned int line_number);
+int checker(stack_t **stack, char *line_tok);
+void nope(stack_t **stack, unsigned int line_number);
+int loop(instruction_t *op_c, char *l_t, stack_t **s, unsigned int l_n);
+void add_func(stack_t **stack, unsigned int l_n);
+void swap_s(stack_t **stack, unsigned int line_number);
 
-/*----------main--------------*/
-void free_nodes(stack_t *stack);
-
-/*----------read_line---------*/
-void open_file(char *filename, stack_t **stack);
-void read_file(char *filename, stack_t **stack);
-int tokenizer(char *buffer, stack_t **stack,
-	      int line_number, int data_format);
-void get_function(char *opcode, stack_t **stack,
-		  int line_number, int data_format);
-
-/*-----stack_operations-------*/
-void _push_stack(stack_t **stack, unsigned int line_number);
-
-/*void _push_queue(stack_t **new_node, unsigned int line_number);*/
-void _pall(stack_t **stack, unsigned int line_number);
-void _pint(stack_t **stack, unsigned int line_number);
-void _pop(stack_t **stack, unsigned int line_number);
-void _swap(stack_t **stack, unsigned int line_number);
-/*-----math_operations-------*/
-void _add(stack_t **stack, unsigned int line_number);
-
-/*-----string_operations-------*/
-void _nop(stack_t **stack, unsigned int line_number);
-
-/*-------error_handler--------*/
-void _error1(int error_code, ...);
-void _error2(int error_code, ...);
-
-#endif /* MONTY_H */
+#endif
